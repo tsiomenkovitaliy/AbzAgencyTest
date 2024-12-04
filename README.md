@@ -94,21 +94,67 @@ To install Alamofire, you can add it using **CocoaPods** or **Swift Package Mana
 
 ## Code Structure
 
-The project follows a **Model-View-ViewModel (MVVM)** architecture:
+The **AbzAgencyTest** project has the following structure:
 
-### Models:
-- **UserManager.swift**: Handles user registration logic and network interactions.
-- **Validator.swift**: Provides validation logic for fields such as name, email, phone, and photo.
-- **ValidationError.swift**: Enum defining error types related to validation issues.
+## Key Components:
+1. **Main Application File**:  
+   - `AbzAgencyTestApp.swift` - the entry point of the application.
 
-### ViewModels:
-- **SignUpViewModel.swift**: Manages the state of the sign-up process, including form validation and API interactions.
-  
-### Views:
-- **SignUpView.swift**: Main view for the sign-up process, binds data to the `SignUpViewModel` and performs validation.
-- **PhotoUploadView.swift**: Handles photo upload functionality.
+2. **Configuration Files**:  
+   - `Info.plist` - main application settings.
 
-### Utilities:
-- **NetworkMonitor.swift**: A utility class that uses `NWPathMonitor` to check the network status.
+3. **ViewModels**:  
+   - Contains files for managing UI states, including:
+     - `UserViewModel.swift`
+     - `SignUpViewModel.swift`
+     - `SignUpStateViewModel.swift`
+     - `NoInternetViewModel.swift`
 
-By following this structure, the README and code documentation will help new developers understand the setup, customization, and dependencies used in the project, and why specific libraries and tools were chosen.
+4. **Networking**:  
+   - Components for network interaction:
+     - `UserService.swift` - API interaction.
+     - `ErrorMessage.swift` - error handling.
+
+5. **Resources**:  
+   - Project resources, categorized as follows:
+     - **Design**:
+       - `AppButtonStyle.swift`, `AppColors.swift`, `AppTypography.swift`
+     - **Assets.xcassets**: 
+       - Graphic assets (e.g., `error-image`, `success-image`).
+     - **Fonts**: 
+       - `NunitoSans-Regular.ttf`, `NunitoSans-Bold.ttf`.
+
+6. **Managers**:  
+   - Managers for handling network requests and application states:
+     - `ConnectivityManager.swift`
+     - `UserManager.swift`
+     - `NetworkManager.swift`
+
+7. **Models**:  
+   - Data models grouped by purpose:
+     - `SignUp`: files related to registration (`TokenResponse.swift`, `Position.swift`).
+     - `User`: files for user handling (`User.swift`, `UserResponse.swift`).
+
+8. **Views**:  
+   - Interface components organized into folders by functionality:
+     - **SignUp**: `SignUpView.swift`, `PhotoUploadView.swift`
+     - **TabBar**: `CustomTabBar.swift`, `TabContentView.swift`
+     - **SplashScreen**: `SplashScreen.swift`
+     - **UserList**: `UserListView.swift`, `UserEmptyView.swift`
+     - **Custom**: custom UI elements (`CustomTopBar.swift`, `CustomTextField.swift`).
+
+9. **Helpers**:  
+   - Utility and helper classes:
+     - `Validator.swift`
+     - `ImagePicker.swift`
+     - `ValidationError.swift`
+
+10. **Project Structure (Xcode)**:  
+    - `AbzAgencyTest.xcodeproj`:
+      - `project.pbxproj` - project file.
+      - Subdirectories with user-specific and shared configuration data.
+
+## Features:
+- **Clean Project Structure**: UI, models, managers, and helpers are logically separated.
+- **Resources**: Organized into subfolders with clear categorization (icons, colors, fonts).
+- **Architecture**: Implements MVVM (Model-View-ViewModel) with a focus on modularity.
