@@ -8,6 +8,8 @@ This project is a simple iOS app designed for user sign-up functionality, includ
 - [Dependencies](#dependencies)
 - [Troubleshooting Tips](#troubleshooting-tips)
 - [Build Instructions](#build-instructions)
+- [Code Documentation](#code-documentation)
+- [Code Structure](#code-structure)  
 
 ## Configuration Options
 
