@@ -10,11 +10,11 @@ struct PhotoUploadView: View {
     var dismissKeyboard: (() -> Void)?
     
     var body: some View {
-        VStack (alignment: .leading) {
+        ZStack (alignment: .topLeading) {
             HStack {
                 Text((imageName?.isEmpty ?? true) ? placeholder : imageName ?? placeholder)
                     .lineLimit(1)
-                    .font(AppTypography.body2())
+                    .font(AppTypography.body1())
                     .foregroundColor(!errorMessage.isEmpty ? AppColors.error : AppColors.black48)
                 
                 Spacer()
@@ -24,7 +24,7 @@ struct PhotoUploadView: View {
                     dismissKeyboard?()
                 }) {
                     Text("Upload")
-                        .font(AppTypography.body2())
+                        .font(AppTypography.body1(wight: .bold))
                         .foregroundColor(AppColors.secondary)
                 }
             }
@@ -37,9 +37,10 @@ struct PhotoUploadView: View {
             
             if !errorMessage.isEmpty {
                 Text(errorMessage)
-                    .font(AppTypography.body2())
+                    .font(AppTypography.bodySmall())
                     .foregroundColor(AppColors.error)
                     .padding(.horizontal)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             }
         }
         .padding(.horizontal)

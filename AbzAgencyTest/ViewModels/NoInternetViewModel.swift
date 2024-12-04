@@ -2,19 +2,24 @@ import Foundation
 import Network
 
 final class NoInternetViewModel: ObservableObject {
+    // MARK: - Published Properties
     @Published var isConnected: Bool = true
     @Published var errorMessage: String = ""
     
+    // MARK: - Private Properties
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "NetworkMonitorQueue")
     
+    // MARK: - Initialization
     init() {
         startMonitoring()
     }
-    
+    // MARK: - Deinitialization
     deinit {
         stopMonitoring()
     }
+    
+    // MARK: - Public Methods
     
     // Start network monitoring
     func startMonitoring() {

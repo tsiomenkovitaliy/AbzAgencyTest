@@ -1,19 +1,19 @@
 import SwiftUI
 
 struct UserListView: View {
-    @StateObject private var viewModel = UsersViewModel()
+    @EnvironmentObject private var usersViewModel: UsersViewModel
 
     var body: some View {
         VStack (spacing: 0) {
                 CustomTopBar()
-            if viewModel.users.isEmpty && !viewModel.isLoading {
+            if usersViewModel.users.isEmpty && !usersViewModel.isLoading {
                 UserEmptyView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
             ScrollView {
                     LazyVStack {
                         // Show user list
-                        ForEach(viewModel.users, id: \.id) { user in
+                        ForEach(usersViewModel.users, id: \.id) { user in
                             UserRow(user: user)
                                 .padding(.top, 24)
                                 .padding(.horizontal, 16)
@@ -21,18 +21,18 @@ struct UserListView: View {
                                 .onAppear {
                                     Task {
                                         // Проверяем, нужно ли загрузить следующую страницу
-                                        if let lastUser = viewModel.users.last,
-                                           viewModel.hasMoreUsers,
+                                        if let lastUser = usersViewModel.users.last,
+                                           usersViewModel.hasMoreUsers,
                                            user.id == lastUser.id,
-                                           !viewModel.isLoading {
-                                            await viewModel.loadUsers()
+                                           !usersViewModel.isLoading {
+                                            await usersViewModel.loadUsers()
                                         }
                                     }
                                 }
                         }
 
                         // Loading indicator
-                        if viewModel.isLoading {
+                        if usersViewModel.isLoading {
                             ProgressView()
                                 .padding(.bottom, 24)
                         }
@@ -44,8 +44,8 @@ struct UserListView: View {
         .background(AppColors.background)
         .task {
             // Load first page
-            if viewModel.users.isEmpty && !viewModel.isLoading && viewModel.hasMoreUsers {
-                await viewModel.loadUsers()
+            if usersViewModel.users.isEmpty && !usersViewModel.isLoading && usersViewModel.hasMoreUsers {
+                await usersViewModel.loadUsers()
             }
         }
     }

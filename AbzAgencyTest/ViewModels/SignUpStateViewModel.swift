@@ -10,7 +10,6 @@ final class SignUpStateViewModel {
     // MARK: - Private Properties
     private var userManager = UserManager.shared
     
-    
     // MARK: - Initializer
     init(userRequest: UserRegistrationRequest? = nil, isSuccess: Bool, message: String) {
         self.message = message
@@ -18,6 +17,7 @@ final class SignUpStateViewModel {
         self.isSuccess = isSuccess
     }
     
+    // MARK: - Public Methods
     func retryRegister() async {
         isLoading = true
         

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct GoogleStyleTextField: View {
+struct CustomTextField: View {
     @Binding var text: String
     @Binding var errorText: String
     
@@ -59,7 +59,7 @@ struct GoogleStyleTextField: View {
             
             Text(isError ? errorText : supportText)
                 .foregroundColor(isError ? AppColors.error : !supportText.isEmpty ? AppColors.black60 : Color.clear)
-                .font(AppTypography.body3())
+                .font(AppTypography.bodySmall())
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                 .padding(.horizontal)
         }
@@ -69,6 +69,6 @@ struct GoogleStyleTextField: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        GoogleStyleTextField(text: .constant("Hello, World!"), errorText: .constant("Error"))
+        CustomTextField(text: .constant("Hello, World!"), errorText: .constant("Error"))
     }
 }

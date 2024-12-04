@@ -13,6 +13,7 @@ struct AppTypography {
         static let body1: CGFloat = 16
         static let body2: CGFloat = 18
         static let body3: CGFloat = 14
+        static let body4: CGFloat = 14
     }
     
     static func font2() -> Font {
@@ -33,5 +34,8 @@ struct AppTypography {
     
     static func body3() -> Font {
         Font.custom("\(fontName)-\(FontWight.regular.rawValue)", size: FontSize.body3)
+    }
+    static func bodySmall() -> Font {
+        Font.custom("\(fontName)-\(FontWight.regular.rawValue)", size: FontSize.body4)
     }
 }

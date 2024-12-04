@@ -2,6 +2,8 @@ import PhotosUI
 import SwiftUI
 
 struct SignUpView: View {
+    @EnvironmentObject private var signUpViewModel: SignUpViewModel
+    
     @State private var sourceType: UIImagePickerController.SourceType = .camera
     @State private var showingImagePicker = false
     @State private var showActionSheet = false
@@ -10,27 +12,25 @@ struct SignUpView: View {
     @FocusState private var isEmailFocused: Bool
     @FocusState private var isPhoneFocused: Bool
     
-    @StateObject private var viewModel = SignUpViewModel()
-    
     var body: some View {
         VStack(spacing: 0) {
             CustomTopBar(method: .post)
             ScrollView {
                 VStack (spacing: 24) {
                     VStack(spacing: 12) {
-                        GoogleStyleTextField(text: $viewModel.name,
-                                             errorText: $viewModel.nameError,
+                        CustomTextField(text: $signUpViewModel.name,
+                                             errorText: $signUpViewModel.nameError,
                                              placeholderText: "Your name")
                             .focused($isNameFocused)
                         
-                        GoogleStyleTextField(text: $viewModel.email,
-                                             errorText: $viewModel.emailError,
+                        CustomTextField(text: $signUpViewModel.email,
+                                             errorText: $signUpViewModel.emailError,
                                              placeholderText: "Email")
                             .focused($isEmailFocused)
                             .keyboardType(.emailAddress)
                         
-                        GoogleStyleTextField(text: $viewModel.phone,
-                                             errorText: $viewModel.phoneError,
+                        CustomTextField(text: $signUpViewModel.phone,
+                                             errorText: $signUpViewModel.phoneError,
                                              supportText: "+38 (XXX) XXX - XX - XX",
                                              placeholderText: "Phone")
                             .focused($isPhoneFocused)
@@ -40,12 +40,12 @@ struct SignUpView: View {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Select your position")
-                            .font(AppTypography.body1())
+                            .font(AppTypography.body2())
                         
-                        ForEach(viewModel.positions, id: \.id) { position in
+                        ForEach(signUpViewModel.positions, id: \.id) { position in
                             HStack {
                                 Circle()
-                                    .strokeBorder(viewModel.selectedPosition?.id == position.id ? AppColors.secondary : AppColors.borderColor, lineWidth: viewModel.selectedPosition?.id == position.id ? 4 : 1)
+                                    .strokeBorder(signUpViewModel.selectedPosition?.id == position.id ? AppColors.secondary : AppColors.borderColor, lineWidth: signUpViewModel.selectedPosition?.id == position.id ? 4 : 1)
                                     .frame(width: 14, height: 14)
                                 
                                 Text(position.name)
@@ -57,29 +57,30 @@ struct SignUpView: View {
                             }
                             .padding(.horizontal)
                             .onTapGesture {
-                                viewModel.selectedPosition = position
+                                signUpViewModel.selectedPosition = position
                                 dismissKeyboard()
                             }
                         }
+                        .padding(.top, 12)
                     }
                     .padding(.horizontal)
                     
                     // Choose photo view
-                    PhotoUploadView(isPhotoUploaded: $viewModel.isPhotoUploaded,
+                    PhotoUploadView(isPhotoUploaded: $signUpViewModel.isPhotoUploaded,
                                     showActionSheet: $showActionSheet,
-                                    errorMessage: $viewModel.photoError,
-                                    imageName: $viewModel.photoName,
+                                    errorMessage: $signUpViewModel.photoError,
+                                    imageName: $signUpViewModel.photoName,
                                     dismissKeyboard: dismissKeyboard)
                     
                     Button(action: {
                         dismissKeyboard()
                         Task {
-                            await viewModel.registerUser()
+                            await signUpViewModel.registerUser()
                         }
                     }) {
                         Text("Sign up")
                     }
-                    .buttonStyle(MainButtonStyle(isDisabled: !viewModel.isSignUpEnabled))
+                    .buttonStyle(MainButtonStyle(isDisabled: !signUpViewModel.isSignUpEnabled))
                     .padding(.horizontal)
                     .padding(.bottom, 32)
                     .frame(maxHeight: .infinity)
@@ -101,27 +102,27 @@ struct SignUpView: View {
             ])
         }
         .sheet(isPresented: $showingImagePicker) {
-            ImagePicker(sourceType: sourceType, selectedImage: $viewModel.photo,
-                        selectedImageName: $viewModel.photoName)
+            ImagePicker(sourceType: sourceType, selectedImage: $signUpViewModel.photo,
+                        selectedImageName: $signUpViewModel.photoName)
             .ignoresSafeArea()
         }
-        .fullScreenCover(isPresented: $viewModel.isShowStateView, content: {
-            SungUpState(viewModel:SignUpStateViewModel(userRequest: viewModel.userRequest, isSuccess: viewModel.isSuccess, message: viewModel.message))
+        .fullScreenCover(isPresented: $signUpViewModel.isShowStateView, content: {
+            SungUpState(viewModel:SignUpStateViewModel(userRequest: signUpViewModel.userRequest, isSuccess: signUpViewModel.isSuccess, message: signUpViewModel.message))
         })
         .onTapGesture {
             dismissKeyboard()
         }
         .onFocusChange(of: showingImagePicker) {
-            viewModel.validatePhoto()
+            signUpViewModel.validatePhoto()
         }
         .onFocusChange(of: isNameFocused) {
-            viewModel.validateName()
+            signUpViewModel.validateName()
         }
         .onFocusChange(of: isEmailFocused) {
-            viewModel.validateEmail()
+            signUpViewModel.validateEmail()
         }
         .onFocusChange(of: isPhoneFocused) {
-            viewModel.validatePhone()
+            signUpViewModel.validatePhone()
         }
     }
     

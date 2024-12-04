@@ -2,14 +2,18 @@ import SwiftUI
 
 @MainActor
 final class UsersViewModel: ObservableObject {
+    
+    // MARK: - Published Properties
     @Published var users: [User] = []
     @Published var isLoading = false
     @Published var hasMoreUsers = true
     
+    // MARK: - Private Properties
     private var currentPage = 1
     private let pageSize = 6
     private let userManager = UserManager.shared
 
+    // MARK: - API Methods
     // Loads users from the server asynchronously, handling pagination and updating state.
     func loadUsers() async {
         guard !isLoading, hasMoreUsers else { return } // Prevents duplicate requests.

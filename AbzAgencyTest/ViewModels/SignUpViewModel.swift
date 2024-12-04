@@ -24,16 +24,11 @@ final class SignUpViewModel: ObservableObject {
     @Published var message: String = "" // Message to display to the user
     @Published var isSignUpEnabled: Bool = false // Indicates if the sign-up button should be enabled
     @Published var isSuccess: Bool = false // Indicates if the sign-up was successful
+    @Published var isShowStateView: Bool = false
     @Published var userRequest: UserRegistrationRequest?
     
     @Published var photo: UIImage? { didSet { validatePhoto() } }
-    @Published var isShowStateView: Bool = false {
-        didSet {
-            if !isShowStateView {
-                resetFields()
-            }
-        }
-    }
+    
     
     // MARK: - Private Properties
     private let userManager = UserManager.shared // Shared instance of UserManager
@@ -69,24 +64,6 @@ final class SignUpViewModel: ObservableObject {
                        photo != nil
             }
             .assign(to: &$isSignUpEnabled)
-    }
-    
-    /// Resets all fields to their initial state
-    private func resetFields() {
-        name = ""
-        email = ""
-        phone  = ""
-        isPhotoUploaded = false
-        photo = nil
-        photoName = ""
-        nameError = ""
-        emailError = ""
-        phoneError = ""
-        photoError = ""
-        selectedPosition = nil
-        isLoading = false
-        message = ""
-        isSignUpEnabled = false
     }
     
     // MARK: - Validation Methods
